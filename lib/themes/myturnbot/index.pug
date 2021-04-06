@@ -1,0 +1,103 @@
+doctype html
+html(lang="en")
+	head
+		meta(charset='utf-8')
+		meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1")
+		title San Francisco COVID-19 Vaccine Tracker
+
+		style(type="text/css").
+			html,
+			body {
+				background-color: #333;
+			  color: #fff;
+			  text-align: center;
+			  text-shadow: 0 1px 3px rgba(0,0,0,.5);
+				width: 100vw;
+				font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+				text-shadow: 0 1px 3px rgba(0,0,0,.5);
+				font-size: 14px;
+				line-height: 1.42857143;
+			}
+
+			h1 {
+				margin-top: 0px;
+			}
+
+			.center {
+				margin-right: auto;
+			  margin-left: auto;
+				max-width: 600px;
+				text-align: left;
+				padding: 10px;
+			}
+
+			.small-text {
+				font-size: 12px;
+			}
+
+			a, a:hover{
+				color: #337ab7;
+			}
+
+			.success {
+				color: rgb(53, 165, 53);
+			}
+
+			.failure {
+				color: rgb(178, 51, 51);
+			}
+
+			.results {
+				display: flex;
+			}
+
+			.name {
+				margin-left: 20px;
+			}
+
+	body
+		div
+			div.center
+				h1.cover-heading San Francisco COVID-19 vaccine appointment tracker
+				p.lead
+					span="Last run: "
+					span=new Date().toString().split("GMT")[0]
+				div.suites
+					if testRun.errmessages.length > 0
+						div.row
+							div.info.failure
+								div.col-md-offset-1.col-md-12.overf System Errors
+							div.asserts
+								each msg in testRun.errmessages
+									div.row
+										div.col-md-offset-2.overf= msg
+					each pkg in testRun.packages
+						each suite in pkg.suites
+							div.asserts
+								each testCase in suite.cases
+									div.results
+										if testCase.isFailure
+											div.failure &#10005;
+										else
+											div.success &#10003;
+										div.name=testCase.message 
+				h3 Information 
+				p This site checks for available COVID-19 vaccine appointments every 5 minutes. If you see a green checkmark above, you should be able to book an appointment through the corresponding site below while it is still available. These appointments are for eligible groups. It is your responsibility to determine whether or not you are eligible. 
+					a(href="https://www.cdph.ca.gov/Programs/CID/DCDC/Pages/COVID-19/VaccineAllocationGuidelines.aspx" target="_blank") CDPH Vaccine Allocation Guidlines
+				ul 
+					li Myturn: 
+						a(href="https://myturn.ca.gov/" target="_blank") myturn.ca.gov
+					li CCSF: 
+						a(href="https://www.primarybio.com/r/ccsf-public" target="_blank") www.primarybio.com
+					li Safeway: 
+						a(href="https://www.mhealthappointments.com/covidappt" target="_blank") www.mhealthappointments.com
+					li Walgreens: 
+						a(href="https://www.walgreens.com/findcare/vaccination/covid-19/" target="_blank") www.walgreens.com
+					li CVS: 
+						a(href="https://www.cvs.com/immunizations/covid-19-vaccine" target="_blank") www.cvs.com
+				p If you found this useful, great! You can very optionally  	
+					a(href="https://www.buymeacoffee.com/vicwomg") buy me a coffee.
+				p.small-text 
+					u Notes
+					span : Myturn.ca.gov often returns false positives for some locations, likely because they get booked before the system catches up. For Safeway, you need to scroll through the list of locations and select one with "Limited availability" or "Yes". Walgreens requires a site account registration to complete a booking.
+				

@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "bot": "./node_modules/.bin/nightwatch; cp -r ./lib/themes/ ./node_modules/nightwatch-html-reporter/lib/themes; ./node_modules/.bin/nightwatch-html-reporter -b false -t myturnbot -d ./tests_output/"
+  },
+  "dependencies": {
+    "chromedriver": "^89.0.0",
+    "nightwatch": "^1.6.1",
+    "nightwatch-html-reporter": "^2.0.6"
+  }
+}
