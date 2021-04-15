@@ -16,6 +16,7 @@ module.exports = {
         browserName: "chrome",
         acceptSslCerts: true,
         acceptInsecureCerts: true,
+        webStorageEnabled : true,
         chromeOptions: {
           w3c: false,
           args: [

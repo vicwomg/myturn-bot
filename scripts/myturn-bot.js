@@ -2,7 +2,7 @@ const zipcode = "94110";
 const county = "San Francisco";
 const state = "California"
 //ageRange possible values (include spaces): "16 - 49", "50 - 64", "65 - 74", "75 and older"
-const ageRange = "16 - 49";
+const ageRange = "18 and older";
 // businessIndustry possible values: "Chemical and hazardous materials", "Communications and IT", "Critical manufacturing", "Defense",
 // "Education and childcare", "Emergency services", "Energy", "Financial services", "Food and Agriculture", "Government operations / community based essential functions"
 // "Healthcare Worker", "Industrial, commercial, residential, and sheltering facilities and services", "Retired", "Transportation and logistics",
@@ -29,16 +29,14 @@ module.exports = {
       .url(url)
       .waitForElementVisible('body')
       .click('button[data-testid=landing-page-continue]')
-      .click('input#q-screening-18-yr-of-age')
-      .click('input#q-screening-health-data')
-      .click('input#q-screening-accuracy-attestation')
       .click('input#q-screening-privacy-statement')
       .click(`input[id="q-screening-eligibility-age-range-${ageRange}"]`)
-      .click('input#q-screening-underlying-health-condition-No')
-      .click('input#q-screening-disability-No')
-      .click(`option[value="${businessIndustry}"]`)
+      .click('input#q-screening-different-county-No')
       .click(`option[value="${county}"]`)
+      .click('input#q-screening-18-yr-of-age')
+      .click('input#q-screening-health-data')
       .click('button[data-testid=continue-button]')
+      .click('button[data-testid=location-search-page-continue]')
       .setValue('input#location-search-input', zipcode)
       .click('button[data-testid=location-search-page-continue]')
       .waitForElementVisible(apptHeader)
@@ -58,10 +56,7 @@ module.exports = {
       .waitForElementVisible(ccsfContinueButton)
       .click(ccsfContinueButton)
       .click('xpath', '//input[contains(@name,"ca_resident") and @value="yes"]')
-      .click('xpath', '//input[contains(@name,"above_65") and @value="no"]')
-      .click('xpath', '//input[@value="childcare"]')
       .click('xpath', '//input[contains(@name,"certify_eligibility") and @value="yes"]')
-      .click('input[value="arrive_by_car"]')
       .click(ccsfContinueButton)
       .setValue('input[name="first_name"]', firstName)
       .setValue('input[name="last_name"]', lastName)
@@ -82,14 +77,26 @@ module.exports = {
       .click('div#gender_string')
       .click('xpath', '//div[text()="Prefer not to disclose"]')
       .click(ccsfContinueButton)
-      .click('xpath', '//button[contains(text(),"(Moderna)")]')
-      .pause(1000)
+      .click('xpath', '//button[contains(text(),"Moderna")]')
+      .pause(500)
       .getText('div.my-5', function(result) {
         !result.value.includes("No more slots") && availableShots.push("Moderna")
         // browser.verify.ok(!result.value.includes("No more slots"), "CCSF Moderna shots are available: " + url)
       })
-      .click('xpath', '//button[contains(text(),"(Pfizer)")]')
-      .pause(1000)
+      .click('xpath', '//button[contains(text(),"Pfizer")]')
+      .pause(500)
+      .getText('div.my-5', function(result) {
+        !result.value.includes("No more slots") && availableShots.push("Pfizer")
+        browser.verify.ok(availableShots.length > 0, `CCSF shots are available: ${availableShots}` )
+      })
+      .click('xpath', '//button[contains(text(),"Drive-Th")]')
+      .pause(500)
+      .getText('div.my-5', function(result) {
+        !result.value.includes("No more slots") && availableShots.push("Pfizer")
+        browser.verify.ok(availableShots.length > 0, `CCSF shots are available: ${availableShots}` )
+      })
+      .click('xpath', '//button[contains(text(),"Pedestrian")]')
+      .pause(500)
       .getText('div.my-5', function(result) {
         !result.value.includes("No more slots") && availableShots.push("Pfizer")
         browser.verify.ok(availableShots.length > 0, `CCSF shots are available: ${availableShots}` )
